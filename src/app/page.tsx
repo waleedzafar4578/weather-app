@@ -90,7 +90,7 @@ export default function HomePage() {
 
           {error && <p className="mt-2 text-red-500">{error}</p>}
 
-          {coordinates && (
+          {coordinates && !loading &&(
               <div className="mt-4 text-sm text-gray-600">
                 <p>Latitude: {coordinates.lat.toFixed(4)}</p>
                 <p>Longitude: {coordinates.lon.toFixed(4)}</p>
