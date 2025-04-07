@@ -111,6 +111,7 @@ export default function HomePage() {
           )}
         </div>
 
+
         {weatherLoading && (
             <div className="text-center py-8">
               <p>Loading weather data...</p>
