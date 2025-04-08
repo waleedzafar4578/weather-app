@@ -1,3 +1,4 @@
+import Image from 'next/image';
 
 export interface WeatherData {
     coord: {
@@ -40,7 +41,7 @@ export interface WeatherData {
     name: string;
     cod: number;
 }
-import { Circles } from 'react-loader-spinner';
+
 export default function WeatherDisplay({weatherData}: {weatherData: WeatherData|null}) {
 
     // Convert timestamp to readable time
@@ -75,11 +76,11 @@ export default function WeatherDisplay({weatherData}: {weatherData: WeatherData|
                         </div>
 
                         <div className="flex items-center mb-6">
-                            <img
+                            <Image
                                 src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
                                 alt={weatherData.weather[0].description}
-                                width="50"
-                                height="50"
+                                width={50}
+                                height={50}
                             />
                             <div className="ml-2">
                                 <p className="text-lg font-medium capitalize">{weatherData.weather[0].main}</p>
@@ -135,13 +136,8 @@ export default function WeatherDisplay({weatherData}: {weatherData: WeatherData|
                     </div>
                 </div>
             ):(
-                <div className="flex items-center justify-center">
-                    <Circles
-                        height="80"
-                        width="80"
-                        color="#99BC85"
-                        ariaLabel="loading"
-                    />
+                <div className="flex w-full justify-center items-center p-8">
+                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF9149]"></div>
                 </div>
             )}
         </div>

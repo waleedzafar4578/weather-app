@@ -4,7 +4,8 @@
 import { useState } from 'react';
 import WeatherDisplay, {WeatherData} from "@/app/weatherDisplay";
 
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoMdArrowRoundBack, IoMdArrowRoundForward } from "react-icons/io";
+import Precautions from './precontions';
 
 export default function HomePage() {
   const [coordinates, setCoordinates] = useState<{lat: number, lon: number} | null>(null);
@@ -13,6 +14,7 @@ export default function HomePage() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState<string | null>(null);
+  const [showPreco,setShowPreco]=useState<boolean>(true);
 
   // Get user's location
   const getLocation = () => {
@@ -88,18 +90,33 @@ export default function HomePage() {
                 <>
                     <IoMdArrowRoundBack
                         size={50}
-                        onClick={()=>setCoordinates(null)}
-                        color={'#C1CFA1'}
+                        onClick={()=>{
+                          if (showPreco === true) {
+                            setCoordinates(null)  
+                          }
+                          else{
+                            setShowPreco(true)
+                          }
+                        }}
+                        color={'#FF9149'}
                         className="hover:text-[#99BC85]"
                     />
-                    <h1 className="text-3xl font-bold text-center mb-6" style={{color:'#C1CFA1'}}>Weather App</h1>
-                    <h1 />
+                    <h1 className="text-3xl font-bold text-center mb-6" style={{color:'#FF9149'}}>Weather App</h1>
+                    {showPreco ? (
+                      <IoMdArrowRoundForward
+                      size={50}
+                      onClick={()=>setShowPreco(!showPreco)}
+                      color={'#FF9149'}
+                      className="hover:text-[#99BC85]"
+                  />
+                    ):(<h1/>)}
+                    
                 </>
 
             ):(
                 <>
                     <h1/>
-                    <h1 className="text-8xl font-bold text-center mb-6" style={{color:'#C1CFA1'}}>Weather App</h1>
+                    <h1 className="text-8xl font-bold text-center mb-6" style={{color:'#FF9149'}}>Weather App</h1>
                     <h1/>
                 </>
             )}
@@ -108,18 +125,16 @@ export default function HomePage() {
         </div>
 
         {!coordinates ?
+
             (
                 <div className={"flex  "}>
                   <div className="mb-6 text-center">
                     <button
-                        style={{
-                            // padding:'14rem',
-                        }}
                         onClick={getLocation}
                         disabled={loading}
-                        className="w-[20rem] h-[20rem] px-4 py-2 bg-[#BED1CF] text-white rounded-[14rem] hover:bg-[#BBC3A4] disabled:bg-gray-400"
+                        className="w-[20rem] h-[20rem] px-4 py-2 bg-[#FF9149] text-white rounded-[14rem] hover:bg-[#BBC3A4] disabled:bg-gray-400"
                     >
-                        {loading ? 'Getting location...' : <h1>Fetch My Location Weather</h1>}
+                        {loading ? 'Getting location...' : <h1>GO</h1>}
                     </button>
 
                     {error && <p className="mt-2 text-red-500">{error}</p>}
@@ -129,15 +144,18 @@ export default function HomePage() {
             :
             (
                 <div className={"flex w-full align-middle justify-stretch  h-full"}>
-                  <WeatherDisplay weatherData={weatherData} />
-
+                  
+                  {showPreco ? (
+                      <WeatherDisplay weatherData={weatherData} />
+                  ):(
+                      <Precautions weatherData={weatherData} />
+                  )}
+                  
                   {weatherError && (
                       <div className="text-center py-4">
                         <p className="text-red-500">{weatherError}</p>
                       </div>
                   )}
-
-
                 </div>
             )}
 
